@@ -5,39 +5,81 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:build_certificate"
         mc:Ignorable="d"
-        Title="Build Certificate" Height="450" Width="800">
+        Title="Build Certificate" Height="694.526" Width="432.07">
     <Grid>
-        <TabControl HorizontalAlignment="Left" Height="317" Margin="10,96,0,0" VerticalAlignment="Top" Width="775">
+        <TabControl HorizontalAlignment="Left" Height="463" Margin="10,96,0,0" VerticalAlignment="Top" Width="402">
             <TabItem Header="System">
                 <Grid Background="#FFE5E5E5">
                     <Label Name="BuildInfoHead" Content="Build Information" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
                     <Label Name="CompName" Content="Computer Name" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top"/>
-                    <Label Name="CompNameVal" Content="Unable to obtain" HorizontalAlignment="Left" Margin="132,41,0,0" VerticalAlignment="Top"/>
+                    <Label Name="CompNameVal" Content="Unable to obtain" HorizontalAlignment="Left" Margin="155,41,0,0" VerticalAlignment="Top"/>
                     <Label Name="AssetNum" Content="Asset Number" HorizontalAlignment="Left" Margin="10,67,0,0" VerticalAlignment="Top"/>
-                    <Label Name="AssetNumVal" Content="Unable to obtain" HorizontalAlignment="Left" Margin="132,67,0,0" VerticalAlignment="Top"/>
+                    <Label Name="AssetNumVal" Content="Unable to obtain" HorizontalAlignment="Left" Margin="155,67,0,0" VerticalAlignment="Top"/>
                     <Label Name="BuildDateTime" Content="Build Date and Time" HorizontalAlignment="Left" Margin="10,93,0,0" VerticalAlignment="Top"/>
-                    <Label Name="BuildDateTimeVal" Content="Unable to obtain" HorizontalAlignment="Left" Margin="132,93,0,0" VerticalAlignment="Top"/>
+                    <Label Name="BuildDateTimeVal" Content="Unable to obtain" HorizontalAlignment="Left" Margin="155,93,0,0" VerticalAlignment="Top"/>
                     <Label Name="InitBuildVer" Content="Initial Build Version" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,119,0,0"/>
-                    <Label Name="InitBuildVerVal" Content="Unable to obtain" HorizontalAlignment="Left" Margin="132,119,0,0" VerticalAlignment="Top"/>
-                    <Label Name="CurrBuildVer" Content="Current Build Version" HorizontalAlignment="Left" Margin="10,145,0,0" VerticalAlignment="Top"/>
-                    <Label Name="CurrBuildVerVal" Content="Unable to obtain" HorizontalAlignment="Left" Margin="137,145,0,0" VerticalAlignment="Top"/>
+                    <Label Name="InitBuildVerVal" Content="Unable to obtain" HorizontalAlignment="Left" Margin="155,119,0,0" VerticalAlignment="Top"/>
+                    <Label Name="CurBuildVer" Content="Current Build Version" HorizontalAlignment="Left" Margin="10,145,0,0" VerticalAlignment="Top"/>
+                    <Label Name="CurBuildVerVal" Content="Unable to obtain" HorizontalAlignment="Left" Margin="155,145,0,0" VerticalAlignment="Top"/>
                     <Label Name="SysSoftHead" Content="System Software" HorizontalAlignment="Left" Margin="10,176,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
                     <Label Name="OperatingSys" Content="Operating System" HorizontalAlignment="Left" Margin="10,202,0,0" VerticalAlignment="Top"/>
-                    <Label Name="OperatingSysVal" Content="Unable to obtain" HorizontalAlignment="Left" Margin="132,202,0,0" VerticalAlignment="Top"/>
+                    <Label Name="OperatingSysVal" Content="Unable to obtain" HorizontalAlignment="Left" Margin="155,202,0,0" VerticalAlignment="Top"/>
                     <Label Name="KernelVer" Content="Kernel Version" HorizontalAlignment="Left" Margin="10,228,0,0" VerticalAlignment="Top"/>
-                    <Label Name="KernelVerVal" Content="Unable to obtain" HorizontalAlignment="Left" Margin="132,228,0,0" VerticalAlignment="Top"/>
+                    <Label Name="KernelVerVal" Content="Unable to obtain" HorizontalAlignment="Left" Margin="155,228,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.833,0.505"/>
                     <Label Name="IEVer" Content="Internet Explorer Version" HorizontalAlignment="Left" Margin="10,253,0,0" VerticalAlignment="Top"/>
                     <Label Name="IEVerVal" Content="Unable to obtain" HorizontalAlignment="Left" Margin="155,253,0,0" VerticalAlignment="Top"/>
+                    <Label Content="Microsoft Edge Version" HorizontalAlignment="Left" Margin="10,279,0,0" VerticalAlignment="Top"/>
+                    <Label Content="Unable to obtain" HorizontalAlignment="Left" Margin="155,279,0,0" VerticalAlignment="Top"/>
+                    <Label Content="Microsoft Office Version" HorizontalAlignment="Left" Margin="10,305,0,0" VerticalAlignment="Top"/>
+                    <Label Content="Unable to obtain" HorizontalAlignment="Left" Margin="155,305,0,0" VerticalAlignment="Top"/>
+                    <Label Content="App-V Version" HorizontalAlignment="Left" Margin="10,331,0,0" VerticalAlignment="Top"/>
+                    <Label Content="Unable to obtain" HorizontalAlignment="Left" Margin="155,331,0,0" VerticalAlignment="Top"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Hardware">
-                <Grid Background="#FFE5E5E5"/>
+                <Grid Background="#FFE5E5E5">
+                    <Label Name="HardwareInfoHead" Content="Hardware Information" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
+                    <Label Name="Make" Content="Make" HorizontalAlignment="Left" Margin="10,36,0,0" VerticalAlignment="Top"/>
+                    <Label Name="MakeVal" Content="Unable to obtain" HorizontalAlignment="Left" Margin="121,36,0,0" VerticalAlignment="Top"/>
+                    <Label Name="Model" Content="Model" HorizontalAlignment="Left" Margin="10,62,0,0" VerticalAlignment="Top"/>
+                    <Label Name="ModelVal" Content="Unable to obtain" HorizontalAlignment="Left" Margin="121,62,0,0" VerticalAlignment="Top"/>
+                    <Label Name="SKUNum" Content="SKU Number" HorizontalAlignment="Left" Margin="10,88,0,0" VerticalAlignment="Top"/>
+                    <Label Name="SKUNumVal" Content="Unable to obtain" HorizontalAlignment="Left" Margin="121,88,0,0" VerticalAlignment="Top"/>
+                    <Label Name="UEFIVer" Content="UEFI/BIOS Version" HorizontalAlignment="Left" Margin="10,114,0,0" VerticalAlignment="Top"/>
+                    <Label Name="UEFIVerVal" Content="Unable to obtain" HorizontalAlignment="Left" Margin="121,114,0,0" VerticalAlignment="Top"/>
+                    <Label Name="Processor" Content="Processor" HorizontalAlignment="Left" Margin="10,140,0,0" VerticalAlignment="Top"/>
+                    <Label Name="ProcessorVal" Content="Unable to obtain" HorizontalAlignment="Left" Margin="121,140,0,0" VerticalAlignment="Top"/>
+                    <Label Name="Memory" Content="Memory" HorizontalAlignment="Left" Margin="10,166,0,0" VerticalAlignment="Top"/>
+                    <Label Name="MemoryVal" Content="Unable to obtain" HorizontalAlignment="Left" Margin="121,166,0,0" VerticalAlignment="Top"/>
+                    <Label Name="NetworkInfoHead" Content="Networking Information" HorizontalAlignment="Left" Margin="10,197,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
+                    <Label Name="IPAddr" Content="IP Address" HorizontalAlignment="Left" Margin="10,221,0,0" VerticalAlignment="Top"/>
+                    <Label Name="IPAddrVal" Content="Unable to obtain" HorizontalAlignment="Left" Margin="121,221,0,0" VerticalAlignment="Top"/>
+                    <Label Name="MACAddr" Content="MAC Address" HorizontalAlignment="Left" Margin="10,247,0,0" VerticalAlignment="Top"/>
+                    <Label Name="MACAddrVal" Content="Unable to obtain" HorizontalAlignment="Left" Margin="121,247,0,0" VerticalAlignment="Top"/>
+                    <Label Name="Gateway" Content="Gateway" HorizontalAlignment="Left" Margin="10,273,0,0" VerticalAlignment="Top"/>
+                    <Label Name="GatewayVal" Content="Unable to obtain" HorizontalAlignment="Left" Margin="121,273,0,0" VerticalAlignment="Top"/>
+                    <Label Name="DNSServers" Content="DNS Servers" HorizontalAlignment="Left" Margin="10,299,0,0" VerticalAlignment="Top"/>
+                    <Label Name="DNSServersVal" Content="Unable to obtain" HorizontalAlignment="Left" Margin="121,299,0,0" VerticalAlignment="Top"/>
+                    <Label Name="Site" Content="Site" HorizontalAlignment="Left" Margin="10,325,0,0" VerticalAlignment="Top"/>
+                    <Label Name="SiteVal" Content="Unable to obtain" HorizontalAlignment="Left" Margin="121,325,0,0" VerticalAlignment="Top"/>
+
+                </Grid>
             </TabItem>
             <TabItem Header="Roles">
-                <Grid Background="#FFE5E5E5"/>
+                <Grid Background="#FFE5E5E5">
+                    <Label Name="DomainInfoHead" Content="Domain Information" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
+                    <Label Name="CurDomain" Content="Current Domain" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top"/>
+                    <Label Name="CurDomainVal" Content="Unable to obtain" HorizontalAlignment="Left" Margin="110,41,0,0" VerticalAlignment="Top"/>
+                    <Label Name="Username" Content="Username" HorizontalAlignment="Left" Margin="10,67,0,0" VerticalAlignment="Top"/>
+                    <Label Name="UsernameVal" Content="Unable to obtain" HorizontalAlignment="Left" Margin="110,67,0,0" VerticalAlignment="Top"/>
+                    <Label Name="ADSite" Content="Site" HorizontalAlignment="Left" Margin="10,93,0,0" VerticalAlignment="Top"/>
+                    <Label Name="ADSiteVal" Content="Unable to obtain" HorizontalAlignment="Left" Margin="110,93,0,0" VerticalAlignment="Top"/>
+                    <Label Name="SubAreaID" Content="SubAreaID" HorizontalAlignment="Left" Margin="10,119,0,0" VerticalAlignment="Top"/>
+                    <Label Name="SubAreaIDVal" Content="Unable to obtain" HorizontalAlignment="Left" Margin="110,119,0,0" VerticalAlignment="Top"/>
+                </Grid>
             </TabItem>
         </TabControl>
-        <Image Source="/sample.png" HorizontalAlignment="Left" Height="100" Margin="10,10,0,0" VerticalAlignment="Top" Width="100"/>
+        <Image Source="Resources/sample.png" HorizontalAlignment="Left" Height="100" Margin="10,10,0,0" VerticalAlignment="Top" Width="100"/>
 
     </Grid>
 </Window>
