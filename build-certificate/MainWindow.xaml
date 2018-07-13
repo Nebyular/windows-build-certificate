@@ -1,0 +1,43 @@
+﻿<Window x:Class="build_certificate.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:build_certificate"
+        mc:Ignorable="d"
+        Title="Build Certificate" Height="450" Width="800">
+    <Grid>
+        <TabControl HorizontalAlignment="Left" Height="317" Margin="10,96,0,0" VerticalAlignment="Top" Width="775">
+            <TabItem Header="System">
+                <Grid Background="#FFE5E5E5">
+                    <Label Name="BuildInfoHead" Content="Build Information" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
+                    <Label Name="CompName" Content="Computer Name" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top"/>
+                    <Label Name="CompNameVal" Content="Unable to obtain" HorizontalAlignment="Left" Margin="132,41,0,0" VerticalAlignment="Top"/>
+                    <Label Name="AssetNum" Content="Asset Number" HorizontalAlignment="Left" Margin="10,67,0,0" VerticalAlignment="Top"/>
+                    <Label Name="AssetNumVal" Content="Unable to obtain" HorizontalAlignment="Left" Margin="132,67,0,0" VerticalAlignment="Top"/>
+                    <Label Name="BuildDateTime" Content="Build Date and Time" HorizontalAlignment="Left" Margin="10,93,0,0" VerticalAlignment="Top"/>
+                    <Label Name="BuildDateTimeVal" Content="Unable to obtain" HorizontalAlignment="Left" Margin="132,93,0,0" VerticalAlignment="Top"/>
+                    <Label Name="InitBuildVer" Content="Initial Build Version" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,119,0,0"/>
+                    <Label Name="InitBuildVerVal" Content="Unable to obtain" HorizontalAlignment="Left" Margin="132,119,0,0" VerticalAlignment="Top"/>
+                    <Label Name="CurrBuildVer" Content="Current Build Version" HorizontalAlignment="Left" Margin="10,145,0,0" VerticalAlignment="Top"/>
+                    <Label Name="CurrBuildVerVal" Content="Unable to obtain" HorizontalAlignment="Left" Margin="137,145,0,0" VerticalAlignment="Top"/>
+                    <Label Name="SysSoftHead" Content="System Software" HorizontalAlignment="Left" Margin="10,176,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
+                    <Label Name="OperatingSys" Content="Operating System" HorizontalAlignment="Left" Margin="10,202,0,0" VerticalAlignment="Top"/>
+                    <Label Name="OperatingSysVal" Content="Unable to obtain" HorizontalAlignment="Left" Margin="132,202,0,0" VerticalAlignment="Top"/>
+                    <Label Name="KernelVer" Content="Kernel Version" HorizontalAlignment="Left" Margin="10,228,0,0" VerticalAlignment="Top"/>
+                    <Label Name="KernelVerVal" Content="Unable to obtain" HorizontalAlignment="Left" Margin="132,228,0,0" VerticalAlignment="Top"/>
+                    <Label Name="IEVer" Content="Internet Explorer Version" HorizontalAlignment="Left" Margin="10,253,0,0" VerticalAlignment="Top"/>
+                    <Label Name="IEVerVal" Content="Unable to obtain" HorizontalAlignment="Left" Margin="155,253,0,0" VerticalAlignment="Top"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Hardware">
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+            <TabItem Header="Roles">
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+        </TabControl>
+        <Image Source="/sample.png" HorizontalAlignment="Left" Height="100" Margin="10,10,0,0" VerticalAlignment="Top" Width="100"/>
+
+    </Grid>
+</Window>
