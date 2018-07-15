@@ -44,10 +44,18 @@ namespace build_certificate
             string result = string.Empty;
             ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_SystemEnclosure");
             foreach (ManagementObject SMBIOSAssetTag in searcher.Get())
-            {
+            try
+                {
                 result = SMBIOSAssetTag["SMBIOSAssetTag"].ToString();
-                break;
-            }
+                    if (result == null || result == "")
+                    result = "Unable to obtain";
+                }
+                catch (Exception ex)  //just for demonstration...it's always best to handle specific exceptions
+                {
+                    //react appropriately
+                        result = "Unable to obtain";
+                        break;
+                }
             return result;
         }
         //Calls WMI and searches for InstallDate
@@ -147,7 +155,7 @@ namespace build_certificate
             ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_Bios");
             foreach (ManagementObject UEFIBIOSVersion in searcher.Get())
             {
-                result = UEFIBIOSVersion["BIOSVersion"].ToString();
+                result = UEFIBIOSVersion["SMBIOSBIOSVersion"].ToString();
                 break;
             }
             return result;
@@ -202,22 +210,37 @@ namespace build_certificate
             return result;
         }
         //Calls Physical Address Class to return MAC Address
-        public static string MACAddress()
+                public static string MACAddress()
         {
-            string result = string.Empty;                                                           //
-            IPGlobalProperties computerProperties = IPGlobalProperties.GetIPGlobalProperties();     // Crappy method to get NIC MAC Address
-            NetworkInterface[] nics = NetworkInterface.GetAllNetworkInterfaces();                   // Probably better ways...
-            foreach (NetworkInterface adapter in nics)                                              //
-            {
-                IPInterfaceProperties properties = adapter.GetIPProperties();
-                result = adapter.GetPhysicalAddress().ToString();
-                break;
+            string result = string.Empty;
 
+            ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT MACAddress FROM Win32_NetworkAdapterConfiguration WHERE INDEX=1");
+            foreach (ManagementObject MACAddress in searcher.Get())
+            {
+                result = MACAddress["MACAddress"].ToString();
+                if (result == null || result == "")
+                result = "Unable to obtain";
+
+                break;
             }
-            result = System.Text.RegularExpressions.Regex.Replace(result.ToString(), ".{2}", "$0-"); //replace with hyphens every 2nd character
-            result = result.Remove(result.Length - 1); //trim the extra '-'
             return result;
         }
+//        public static string MACAddress()
+//        {
+//            string result = string.Empty;                                                           //
+//            IPGlobalProperties computerProperties = IPGlobalProperties.GetIPGlobalProperties();     // Crappy method to get NIC MAC Address
+//            NetworkInterface[] nics = NetworkInterface.GetAllNetworkInterfaces();                   // Probably better ways...
+//            foreach (NetworkInterface adapter in nics)                                              //
+//            {
+//                IPInterfaceProperties properties = adapter.GetIPProperties();
+//                result = adapter.GetPhysicalAddress().ToString();
+//                break;
+//
+//            }
+//            result = System.Text.RegularExpressions.Regex.Replace(result.ToString(), ".{2}", "$0-"); //replace with hyphens every 2nd character
+//            result = result.Remove(result.Length - 1); //trim the extra '-'
+//            return result;
+//        }
 
         //Calls IPAddress class and looks for first network card and grabs it's gateway address
         //public static IPAddress GatewayAddress()
@@ -251,17 +274,22 @@ namespace build_certificate
         public static string GatewayAddress()
         {
             string result = string.Empty;
-            ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_NetworkAdapterConfiguration WHERE INDEX=1");
+            ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT DefaultIPGateway FROM Win32_NetworkAdapterConfiguration WHERE INDEX=1");
             foreach (ManagementObject GatewayAddress in searcher.Get())
             {
                 try
                 {
-                    result = GatewayAddress["DefaultIPGateway"].ToString();
+                    //result = GatewayAddress["DefaultIPGateway"].GetType().ToString();
+                    Object obj = GatewayAddress["DefaultIPGateway"];                                                    //my code works and I dont' know why...
+                    string[] array = (obj as IEnumerable<object>).Cast<object>().Select(x => x.ToString()).ToArray();
+                    result = array[0];
+                    //result = obj[0].ToString;                                                                         //my code doesn't work and I don't know why...
                 }
                 catch (Exception ex)  //just for demonstration...it's always best to handle specific exceptions
                 {
                     //react appropriately
                     if (result == null)
+                        result = "Unable to obtain";
                         break;
                 }
 
@@ -270,30 +298,58 @@ namespace build_certificate
             return result;
         }
         //Calls NetworkInterface class and looks for first network card and grabs it's DNS address
-        public static string DnsAddress()
+                public static string DnsAddress()
         {
             string result = string.Empty;
-            NetworkInterface[] adapters = NetworkInterface.GetAllNetworkInterfaces();
-            foreach (NetworkInterface adapter in adapters)
+            ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT DNSServerSearchOrder FROM Win32_NetworkAdapterConfiguration WHERE INDEX=1");
+            foreach (ManagementObject DnsAddress in searcher.Get())
             {
-
-                IPInterfaceProperties adapterProperties = adapter.GetIPProperties();
-                IPAddressCollection dnsServers = adapterProperties.DnsAddresses;
-                if (dnsServers.Count > 0)
+                try
                 {
-                    Console.WriteLine(adapter.Description);
-                    foreach (IPAddress dns in dnsServers)
-                    {
-                            
-                        result = dns.ToString();
-                        break;
-
-                    }
+                    //result = GatewayAddress["DefaultIPGateway"].GetType().ToString();
+                    Object obj = DnsAddress["DNSServerSearchOrder"];                                                    //my code works and I dont' know why...
+                    string[] array = (obj as IEnumerable<object>).Cast<object>().Select(x => x.ToString()).ToArray();
+                    result = array[0];
+                    //result = obj[0].ToString;                                                                         //my code doesn't work and I don't know why...
                 }
+                catch (Exception ex)  //just for demonstration...it's always best to handle specific exceptions
+                {
+                    //react appropriately
+                    if (result == null)
+                        result = "Unable to obtain";
+                        break;
+                }
+
                 break;
             }
             return result;
         }
+
+//        public static string DnsAddress()
+//        {
+//            string result = string.Empty;
+//            NetworkInterface[] adapters = NetworkInterface.GetAllNetworkInterfaces();
+//            foreach (NetworkInterface adapter in adapters)
+//            {
+//
+//                IPInterfaceProperties adapterProperties = adapter.GetIPProperties();
+//                IPAddressCollection dnsServers = adapterProperties.DnsAddresses;
+//                if (dnsServers.Count > 0)
+//                {
+//                    Console.WriteLine(adapter.Description);
+//                    foreach (IPAddress dns in dnsServers)
+//                    {
+//                            
+//                        result = dns.ToString();
+//                        break;
+//
+//                    }
+//                }
+//                break;
+//            }
+//            return result;
+//        }
+
         //
         //!--Domain Info--!!
         //
@@ -312,6 +368,7 @@ namespace build_certificate
                 {
                     //react appropriately
                     if (result == null)
+                        result = "Unable to obtain";
                         break;
                 }
 
@@ -334,6 +391,7 @@ namespace build_certificate
                 {
                     //react appropriately
                     if (result == null)
+                        result = "Unable to obtain";
                         break;
                 }
 
@@ -341,7 +399,7 @@ namespace build_certificate
             }
             return result;
         }
-        //Calls WMI and searches for DomainName
+        //Calls WMI and searches for ClientSiteName
         public static string ADSiteName()
         {
             string result = string.Empty;
@@ -351,11 +409,15 @@ namespace build_certificate
                 try
                 {
                     result = ADSiteName["ClientSiteName"].ToString();
+                    if (result == null || result == "")
+                    result = "Unable to obtain";
+
                 }
                 catch (Exception ex)  //just for demonstration...it's always best to handle specific exceptions
                 {
                     //react appropriately
                     if (result == null)
+                        result = "Unable to obtain";
                         break;
                 }
 
@@ -419,7 +481,7 @@ namespace build_certificate
             //Domain Information
             CurDomainVal.Content = DomainName();
             UsernameVal.Content = UserName();
-            ADSiteVal.Content = ADSiteName();
+            SiteVal.Content = ADSiteName();
             //SubAreaIDVal.Content = GetGroups("Jack");
             //--Roles Tab End--
         }
