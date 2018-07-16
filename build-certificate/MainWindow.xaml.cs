@@ -65,7 +65,8 @@ namespace build_certificate
             ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_OperatingSystem");
             foreach (ManagementObject InstallDate in searcher.Get())
             {
-                result = InstallDate["InstallDate"].ToString();
+                DateTime dt = ManagementDateTimeConverter.ToDateTime(InstallDate["InstallDate"].ToString());
+                result = dt.ToString();
                 break;
             }
             return result;
@@ -80,7 +81,7 @@ namespace build_certificate
             foreach (ManagementObject BuildNumber in searcher.Get())
             {
                 build = BuildNumber["BuildNumber"].ToString();
-                result = build.Insert(0, "Build "); //Insert "Build" at the first index
+                build = build.Insert(0, "Build "); //Insert "Build" at the first index
                 try //now we check the registry key values for the Release ID
                 {
                     using (RegistryKey key = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows NT\\CurrentVersion"))
@@ -99,8 +100,8 @@ namespace build_certificate
                 {
                     //react appropriately
                 }
-                result = version.Insert(0, "Version "); //Insert "Version" at the first index
-
+                version = version.Insert(0, "Version "); //Insert "Version" at the first index
+                result = version + " " + build;
                 break;
             }
             return result;
@@ -126,7 +127,7 @@ namespace build_certificate
         {
             string result = string.Empty;
 
-            ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_OperatingSystem");
+            ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_BIOS");
             foreach (ManagementObject MakeName in searcher.Get())
             {
                 result = MakeName["Manufacturer"].ToString();
@@ -353,16 +354,17 @@ namespace build_certificate
         //
         //!--Domain Info--!!
         //
+
         //Calls WMI and searches for DomainName
         public static string DomainName()
         {
             string result = string.Empty;
-            ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_NTDomain");
+            ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_ComputerSystem");
             foreach (ManagementObject DomainName in searcher.Get())
             {
                 try
                 {
-                    result = DomainName["DomainName"].ToString();
+                    result = DomainName["Domain"].ToString();
                 }
                 catch (Exception ex)  //just for demonstration...it's always best to handle specific exceptions
                 {
@@ -376,7 +378,7 @@ namespace build_certificate
             }
             return result;
         }
-        //Calls WMI and searches for DomainName
+        //Calls WMI and searches for UserName
         public static string UserName()
         {
             string result = string.Empty;
@@ -425,7 +427,29 @@ namespace build_certificate
             }
             return result;
         }
+        //Calls WMI and searches for DomainControllerName
+        public static string DCServerName()
+        {
+            string result = string.Empty;
+            ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_NTDomain");
+            foreach (ManagementObject DCServerName in searcher.Get())
+            {
+                try
+                {
+                    result = DCServerName["DomainControllerName"].ToString();
+                }
+                catch (Exception ex)  //just for demonstration...it's always best to handle specific exceptions
+                {
+                    //react appropriately
+                    if (result == null)
+                        result = "Unable to obtain";
+                    break;
+                }
 
+                break;
+            }
+            return result;
+        }
         //Call AD and return user groups for user
         public static string[] GetGroups(string username)
         {
@@ -481,8 +505,11 @@ namespace build_certificate
             //Domain Information
             CurDomainVal.Content = DomainName();
             UsernameVal.Content = UserName();
-            SiteVal.Content = ADSiteName();
-            //SubAreaIDVal.Content = GetGroups("Jack");
+            SiteVal.Content = (System.DirectoryServices.ActiveDirectory.ActiveDirectorySite.GetComputerSite());  //!!!FIX PUT IN NULL RETURN CATCH!!!
+            //SiteVal.Content = ADSiteName();
+            DCServerVal.Content = DCServerName();
+            SubAreaIDVal.Content = Environment.GetEnvironmentVariable("SubAreaID");
+            //ADGroupsVal.Items.Add(GetGroups(System.Security.Principal.WindowsIdentity.GetCurrent().Name));
             //--Roles Tab End--
         }
 
@@ -491,7 +518,10 @@ namespace build_certificate
 
         }
 
-
+        private void Close_Button_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown(); //programatically close the app
+        }
     }
 }
 
