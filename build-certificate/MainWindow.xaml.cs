@@ -505,7 +505,7 @@ namespace build_certificate
             //Domain Information
             CurDomainVal.Content = DomainName();
             UsernameVal.Content = UserName();
-            SiteVal.Content = (System.DirectoryServices.ActiveDirectory.ActiveDirectorySite.GetComputerSite());  //!!!FIX PUT IN NULL RETURN CATCH!!!
+            //SiteVal.Content = (System.DirectoryServices.ActiveDirectory.ActiveDirectorySite.GetComputerSite());  //!!!FIX PUT IN NULL RETURN CATCH!!!
             //SiteVal.Content = ADSiteName();
             DCServerVal.Content = DCServerName();
             SubAreaIDVal.Content = Environment.GetEnvironmentVariable("SubAreaID");
