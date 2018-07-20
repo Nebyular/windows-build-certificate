@@ -26,6 +26,24 @@ namespace build_certificate
     /// </summary>
     public partial class MainWindow : Window
     {
+        public static string ComputerName()
+        {
+            string result = string.Empty;
+            {
+                try
+                {
+                    if (result != null)
+                        result = Environment.MachineName;
+                    if (result == null)
+                        result = "Unable to obtain";
+                }
+                catch (Exception ex)
+                {
+                    result = "Unable to obtain";
+                }
+                return result;
+            }
+        }
         //Calls WMI and searches for OS caption name
         public static string GetOSFriendlyName()
         {
@@ -119,6 +137,100 @@ namespace build_certificate
             }
             return result;
         }
+        //Calls WMI and searches for IE Version
+        public static string IEVersion()
+        {
+            string result = string.Empty;
+            try
+            {
+            using (RegistryKey key = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Internet Explorer"))
+            {
+                if (key != null)
+                {
+                    Object o = key.GetValue("svcVersion");
+                    if (o != null)
+                    {
+                            result = o.ToString(); //convert object to string
+                    }
+                }
+            }
+            }
+            catch (Exception ex)
+            {
+                result = ex.ToString();
+            }
+            return result;
+        }
+        //Calls Registry Key and searches for Microsoft Office Version
+        public static string MSOfficeVersion()
+        {
+            string result = string.Empty;
+            try
+            {
+                using (RegistryKey key = Registry.LocalMachine.OpenSubKey("Software\\Wow6432Node\\Microsoft\\Microsoft\\Office\\16.0\\Common\\ProductVersion"))
+                {
+                    if (key != null)
+                    {
+                        Object o = key.GetValue("LastProduct");
+                        if (o != null)
+                        {
+                            result = o.ToString(); //convert object to string
+                        }
+                    }
+                    if (key == null)
+                    {
+                        using (RegistryKey key2 = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Microsoft\\Office\\16.0\\Common\\ProductVersion"))
+                        {
+                            if (key2 != null)
+                            {
+                                Object o = key2.GetValue("LastProduct");
+                                if (o != null)
+                                {
+                                    result = o.ToString(); //convert object to string
+                                }
+                            }
+                            if (key2 == null)
+                            {
+                                result = "No Office Detected"; //can we apply for both?!?
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                result = ex.ToString();
+            }
+            return result;
+        }
+        //Calls WMI and searches for AppV Version
+        public static string AppVVersion()
+        {
+            string result = string.Empty;
+            try
+            {
+                using (RegistryKey key = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\AppV\\Client"))
+                {
+                    if (key != null)
+                    {
+                        Object o = key.GetValue("Version");
+                        if (o != null)
+                        {
+                            result = o.ToString(); //convert object to string
+                        }
+                    }
+                    if (key == null)
+                    {
+                        result = "No AppV Detected";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                result = ex.ToString();
+            }
+            return result;
+        }
         //
         //!--Hardware Info--!!
         //
@@ -206,7 +318,7 @@ namespace build_certificate
         public static string IPAddress()
         {
             string hostName = Dns.GetHostName();
-            string result = Dns.GetHostEntry(hostName).AddressList[1].ToString();
+            string result = Dns.GetHostEntry(hostName).AddressList[0].ToString();
 
             return result;
         }
@@ -226,52 +338,8 @@ namespace build_certificate
             }
             return result;
         }
-//        public static string MACAddress()
-//        {
-//            string result = string.Empty;                                                           //
-//            IPGlobalProperties computerProperties = IPGlobalProperties.GetIPGlobalProperties();     // Crappy method to get NIC MAC Address
-//            NetworkInterface[] nics = NetworkInterface.GetAllNetworkInterfaces();                   // Probably better ways...
-//            foreach (NetworkInterface adapter in nics)                                              //
-//            {
-//                IPInterfaceProperties properties = adapter.GetIPProperties();
-//                result = adapter.GetPhysicalAddress().ToString();
-//                break;
-//
-//            }
-//            result = System.Text.RegularExpressions.Regex.Replace(result.ToString(), ".{2}", "$0-"); //replace with hyphens every 2nd character
-//            result = result.Remove(result.Length - 1); //trim the extra '-'
-//            return result;
-//        }
 
-        //Calls IPAddress class and looks for first network card and grabs it's gateway address
-        //public static IPAddress GatewayAddress()
-        //{
-        //    IPAddress result = null;
-        //    var cards = NetworkInterface.GetAllNetworkInterfaces().ToList();
-        //    if (cards.Any())
-        //    {
-        //        foreach (var card in cards)
-        //        {
-        //            var props = card.GetIPProperties();
-        //            if (props == null)
-        //                continue;
-
-        //            var gateways = props.GatewayAddresses;
-        //            if (!gateways.Any())
-        //                continue;
-
-        //            var gateway =
-        //                gateways.FirstOrDefault(g => g.Address.AddressFamily.ToString() == "InterNetwork");
-        //            if (gateway == null)
-        //                continue;
-
-        //            result = gateway.Address;
-        //            break;
-        //        };
-        //    }
-        //                return result;
-        //}
-        //Calls WMI and searches for DomainName
+        //Calls WMI and searches for GatewayAddress
         public static string GatewayAddress()
         {
             string result = string.Empty;
@@ -289,7 +357,7 @@ namespace build_certificate
                 catch (Exception ex)  //just for demonstration...it's always best to handle specific exceptions
                 {
                     //react appropriately
-                    if (result == null)
+                    if (result == null || result == "")
                         result = "Unable to obtain";
                         break;
                 }
@@ -316,7 +384,7 @@ namespace build_certificate
                 catch (Exception ex)  //just for demonstration...it's always best to handle specific exceptions
                 {
                     //react appropriately
-                    if (result == null)
+                    if (result == null || result == "")
                         result = "Unable to obtain";
                         break;
                 }
@@ -325,31 +393,6 @@ namespace build_certificate
             }
             return result;
         }
-
-//        public static string DnsAddress()
-//        {
-//            string result = string.Empty;
-//            NetworkInterface[] adapters = NetworkInterface.GetAllNetworkInterfaces();
-//            foreach (NetworkInterface adapter in adapters)
-//            {
-//
-//                IPInterfaceProperties adapterProperties = adapter.GetIPProperties();
-//                IPAddressCollection dnsServers = adapterProperties.DnsAddresses;
-//                if (dnsServers.Count > 0)
-//                {
-//                    Console.WriteLine(adapter.Description);
-//                    foreach (IPAddress dns in dnsServers)
-//                    {
-//                            
-//                        result = dns.ToString();
-//                        break;
-//
-//                    }
-//                }
-//                break;
-//            }
-//            return result;
-//        }
 
         //
         //!--Domain Info--!!
@@ -418,7 +461,7 @@ namespace build_certificate
                 catch (Exception ex)  //just for demonstration...it's always best to handle specific exceptions
                 {
                     //react appropriately
-                    if (result == null)
+                    if (result == null || result == "")
                         result = "Unable to obtain";
                         break;
                 }
@@ -427,28 +470,43 @@ namespace build_certificate
             }
             return result;
         }
-        //Calls WMI and searches for DomainControllerName
+        //Calls environment variable and searches for logonserver
         public static string DCServerName()
         {
             string result = string.Empty;
-            ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_NTDomain");
-            foreach (ManagementObject DCServerName in searcher.Get())
             {
                 try
                 {
-                    result = DCServerName["DomainControllerName"].ToString();
-                }
-                catch (Exception ex)  //just for demonstration...it's always best to handle specific exceptions
-                {
-                    //react appropriately
+                    if (result != null)
+                    result = Environment.GetEnvironmentVariable("logonserver");
                     if (result == null)
                         result = "Unable to obtain";
-                    break;
                 }
-
-                break;
+                catch (Exception ex)
+                {
+                    result = "Unable to obtain";
+                }
+                return result;
             }
-            return result;
+        }
+        //Calls environment variable SubAreaID and returns it
+        public static string SubAreaName()
+        {
+            string result = string.Empty;
+            {
+                try
+                {
+                    if (result != null)
+                        result = Environment.GetEnvironmentVariable("SubAreaID");
+                    if (result == null)
+                        result = "Unable to obtain";
+                }
+                catch (Exception ex)
+                {
+                    result = "Unable to obtain";
+                }
+                return result;
+            }
         }
         //Call AD and return user groups for user
         public static string[] GetGroups(string username)
@@ -475,7 +533,7 @@ namespace build_certificate
             InitializeComponent();
             //--System Tab Start--
             //Build Information
-            CompNameVal.Content = Environment.MachineName; //We can get this item locally in .NET
+            CompNameVal.Content = ComputerName();
             AssetNumVal.Content = GetAssetTag();
             BuildDateTimeVal.Content = InstallDate();
             InitBuildVerVal.Content = "TODO"; //Probably use a filedrop or call the old registry key value
@@ -483,7 +541,9 @@ namespace build_certificate
             //System Software
             OperatingSysVal.Content = GetOSFriendlyName();
             KernelVerVal.Content = Kernel();
-            IEVerVal.Content = "TODO"; //Maybe registry?
+            IEVerVal.Content = IEVersion(); //Maybe registry?
+            MSOfficeVerVal.Content = MSOfficeVersion();
+            AppVVerVal.Content = AppVVersion();
             //--System Tab End--
 
             //--Hardware Tab Start--
@@ -505,10 +565,10 @@ namespace build_certificate
             //Domain Information
             CurDomainVal.Content = DomainName();
             UsernameVal.Content = UserName();
-            SiteVal.Content = (System.DirectoryServices.ActiveDirectory.ActiveDirectorySite.GetComputerSite());  //!!!FIX PUT IN NULL RETURN CATCH!!!
-            //SiteVal.Content = ADSiteName();
+            //ADSiteVal.Content = (System.DirectoryServices.ActiveDirectory.ActiveDirectorySite.GetComputerSite());  //!!!FIX PUT IN NULL RETURN CATCH!!!
+            ADSiteVal.Content = ADSiteName();
             DCServerVal.Content = DCServerName();
-            SubAreaIDVal.Content = Environment.GetEnvironmentVariable("SubAreaID");
+            SubAreaIDVal.Content = SubAreaName();
             //ADGroupsVal.Items.Add(GetGroups(System.Security.Principal.WindowsIdentity.GetCurrent().Name));
             //--Roles Tab End--
         }

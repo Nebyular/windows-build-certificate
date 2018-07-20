@@ -28,12 +28,12 @@
                     <Label Name="KernelVerVal" Content="Unable to obtain" HorizontalAlignment="Left" Margin="155,228,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.833,0.505"/>
                     <Label Name="IEVer" Content="Internet Explorer Version" HorizontalAlignment="Left" Margin="10,253,0,0" VerticalAlignment="Top"/>
                     <Label Name="IEVerVal" Content="Unable to obtain" HorizontalAlignment="Left" Margin="155,253,0,0" VerticalAlignment="Top"/>
-                    <Label Content="Microsoft Edge Version" HorizontalAlignment="Left" Margin="10,279,0,0" VerticalAlignment="Top"/>
-                    <Label Content="Unable to obtain" HorizontalAlignment="Left" Margin="155,279,0,0" VerticalAlignment="Top"/>
-                    <Label Content="Microsoft Office Version" HorizontalAlignment="Left" Margin="10,305,0,0" VerticalAlignment="Top"/>
-                    <Label Content="Unable to obtain" HorizontalAlignment="Left" Margin="155,305,0,0" VerticalAlignment="Top"/>
-                    <Label Content="App-V Version" HorizontalAlignment="Left" Margin="10,331,0,0" VerticalAlignment="Top"/>
-                    <Label Content="Unable to obtain" HorizontalAlignment="Left" Margin="155,331,0,0" VerticalAlignment="Top"/>
+                    <Label Name="EdgeVer"  Content="Microsoft Edge Version" HorizontalAlignment="Left" Margin="10,279,0,0" VerticalAlignment="Top"/>
+                    <Label Name="EdgeVerVal" Content="Unable to obtain" HorizontalAlignment="Left" Margin="155,279,0,0" VerticalAlignment="Top"/>
+                    <Label Name="MSOfficeVer" Content="Microsoft Office Version" HorizontalAlignment="Left" Margin="10,305,0,0" VerticalAlignment="Top"/>
+                    <Label Name="MSOfficeVerVal" Content="Unable to obtain" HorizontalAlignment="Left" Margin="155,305,0,0" VerticalAlignment="Top"/>
+                    <Label Name="AppVVer" Content="App-V Version" HorizontalAlignment="Left" Margin="10,331,0,0" VerticalAlignment="Top"/>
+                    <Label Name="AppVVerVal" Content="Unable to obtain" HorizontalAlignment="Left" Margin="155,331,0,0" VerticalAlignment="Top"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Hardware">
@@ -60,9 +60,6 @@
                     <Label Name="GatewayVal" Content="Unable to obtain" HorizontalAlignment="Left" Margin="121,273,0,0" VerticalAlignment="Top"/>
                     <Label Name="DNSServers" Content="DNS Servers" HorizontalAlignment="Left" Margin="10,299,0,0" VerticalAlignment="Top"/>
                     <Label Name="DNSServersVal" Content="Unable to obtain" HorizontalAlignment="Left" Margin="121,299,0,0" VerticalAlignment="Top"/>
-                    <Label Name="Site" Content="Site" HorizontalAlignment="Left" Margin="10,325,0,0" VerticalAlignment="Top"/>
-                    <Label Name="SiteVal" Content="Unable to obtain" HorizontalAlignment="Left" Margin="121,325,0,0" VerticalAlignment="Top"/>
-
                 </Grid>
             </TabItem>
             <TabItem Header="Roles">
