@@ -85,35 +85,6 @@ namespace build_certificate
                 }
             return result;
         }
-        //Calls registry and searches for Iniital install version
-        public static string InitialInstallVersion()
-        {
-            string result = string.Empty;
-            try //now we check the registry key values for the Release ID
-            {
-                using (RegistryKey key = Registry.LocalMachine.OpenSubKey("System\\Select\\DHS"))
-                {
-                    if (key != null)
-                        if (key != null)
-                        {
-                            Object o = key.GetValue("BuildVersion");
-                            if (o != null)
-                            {
-                                result = o.ToString();  //convert object to string
-                            }
-                        }
-                    result = "Unable to obtain";
-                }
-            }
-            catch (Exception ex)  //just for demonstration...it's always best to handle specific exceptions
-            {
-                result = "Unable to obtain";
-            }
-            return result;
-        }
-    
-        
-
         //Calls WMI and searches for InstallDate
         public static string InstallDate()
         {
@@ -140,7 +111,6 @@ namespace build_certificate
             string build = string.Empty;
             string result = string.Empty;
             string version = string.Empty;
-
             ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_OperatingSystem");
             foreach (ManagementObject BuildNumber in searcher.Get())
             {
@@ -156,16 +126,16 @@ namespace build_certificate
                             if (o != null)
                             {
                                 version = o.ToString(); //convert object to string
-                                result = "Version " + version;
                             }
                         }
                     }
                 }
                 catch (Exception ex)  //just for demonstration...it's always best to handle specific exceptions
                 {
-                    result = "Unable to obtain";
+                    //react appropriately
                 }
-
+                version = version.Insert(0, "Version "); //Insert "Version" at the first index
+                result = version + " " + build;
                 break;
             }
             return result;
@@ -174,14 +144,12 @@ namespace build_certificate
         public static string Kernel()
         {
             string result = string.Empty;
-            string version = string.Empty;
-            string ubr = string.Empty;
             try
             {
-                ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT Version FROM Win32_OperatingSystem");
+                ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_OperatingSystem");
                 foreach (ManagementObject Kernel in searcher.Get())
                 {
-                    version = Kernel["Version"].ToString();
+                    result = Kernel["Version"].ToString();
                     break;
                 }
             }
@@ -189,28 +157,104 @@ namespace build_certificate
             {
                 result = "Unable to obtain";
             }
+            return result;
+        }
+        //Calls WMI and searches for IE Version
+        public static string IEVersion()
+        {
+            string result = string.Empty;
             try
             {
-                using (RegistryKey key2 = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows NT\\CurrentVersion"))
+                using (RegistryKey key = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Internet Explorer"))
                 {
-                    if (key2 != null)
+                    if (key != null)
                     {
-                        Object o = key2.GetValue("UBR");
+                        Object o = key.GetValue("svcVersion");
                         if (o != null)
                         {
-                            ubr = o.ToString(); //convert object to string
+                            result = o.ToString(); //convert object to string
                         }
                     }
                 }
             }
-            catch (Exception ex)  //just for demonstration...it's always best to handle specific exceptions
+            catch (Exception ex)
             {
-                result = "Unable to obtain";
+                result = ex.ToString();
             }
-            result = version + "." + ubr;
             return result;
         }
 
+        //Calls Registry Key and searches for Microsoft Office Version
+        public static string MSOfficeVersion()
+        {
+            string result = string.Empty;
+            //var fileVersionInfo = "";
+            //var version = "";
+                try
+                {
+                var fileVersionInfo = FileVersionInfo.GetVersionInfo(@"C:\Program Files (x86)\Microsoft Office\root\Office16\WINWORD.EXE");
+                var version = new Version(fileVersionInfo.FileVersion);
+                result = version.ToString();
+                if (result == null || result == "")
+                        result = "Unable to obtain";
+                }
+                catch (Exception ex)  //just for demonstration...it's always best to handle specific exceptions
+                {
+                    //react appropriately
+                    result = "Unable to obtain";
+                }
+            return result;
+        }
+
+        ////Calls Registry Key and searches for Microsoft Office Version
+        //public static string MSOfficeVersion()
+        //{
+        //    string result = string.Empty;
+        //    ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT Version FROM Win32_Product WHERE Name = 'Office 16 Click-to-Run Licensing Component'");
+        //    foreach (ManagementObject Version in searcher.Get())
+        //        try
+        //        {
+        //            result = Version["Version"].ToString();
+        //            if (result == null || result == "")
+        //                result = "Unable to obtain";
+        //        }
+        //        catch (Exception ex)  //just for demonstration...it's always best to handle specific exceptions
+        //        {
+        //            //react appropriately
+        //            result = "Unable to obtain";
+        //            break;
+        //        }
+        //    return result;
+        //}
+
+        //Calls WMI and searches for AppV Version
+        public static string AppVVersion()
+        {
+            string result = string.Empty;
+            try
+            {
+                using (RegistryKey key = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\AppV\\Client"))
+                {
+                    if (key != null)
+                    {
+                        Object o = key.GetValue("Version");
+                        if (o != null)
+                        {
+                            result = o.ToString(); //convert object to string
+                        }
+                    }
+                    if (key == null)
+                    {
+                        result = "No AppV Detected";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                result = ex.ToString();
+            }
+            return result;
+        }
         //
         //!--Hardware Info--!!
         //
@@ -325,30 +369,11 @@ namespace build_certificate
             }
             return result.ToString(result+" GB");
         }
-        //Calls WMI and searches for BIOS UUID
-        public static string UUID()
-        {
-            string result = string.Empty;
-            try
-            {
-                ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT UUID FROM WIN32_COMPUTERSYSTEMPRODUCT");
-                foreach (ManagementObject UUID in searcher.Get())
-                {
-                    result = UUID["UUID"].ToString();
-                    break;
-                }
-            }
-            catch (Exception ex)
-            {
-                result = "Unable to obtain";
-            }
-            return result;
-        }
         //Calls DNS class to return IP for hostname in Index 1 (Index 0 is normally loopback)
         public static string IPAddress()
         {
             string hostName = Dns.GetHostName();
-            string result = Dns.GetHostEntry(hostName).AddressList[1].ToString();
+            string result = Dns.GetHostEntry(hostName).AddressList[0].ToString();
 
             return result;
         }
@@ -358,7 +383,7 @@ namespace build_certificate
             string result = string.Empty;
             try
             {
-                ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT MACAddress FROM Win32_NetworkAdapterConfiguration WHERE INDEX=2");
+                ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT MACAddress FROM Win32_NetworkAdapterConfiguration WHERE INDEX=1");
                 foreach (ManagementObject MACAddress in searcher.Get())
                 {
                     result = MACAddress["MACAddress"].ToString();
@@ -375,6 +400,222 @@ namespace build_certificate
             return result;
         }
 
+        //Calls WMI and searches for GatewayAddress
+        public static string GatewayAddress()
+        {
+            string result = string.Empty;
+            ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT DefaultIPGateway FROM Win32_NetworkAdapterConfiguration WHERE INDEX=1");
+            foreach (ManagementObject GatewayAddress in searcher.Get())
+            {
+                try
+                {
+                    //result = GatewayAddress["DefaultIPGateway"].GetType().ToString();
+                    Object obj = GatewayAddress["DefaultIPGateway"];                                                    //my code works and I dont' know why...
+                    string[] array = (obj as IEnumerable<object>).Cast<object>().Select(x => x.ToString()).ToArray();
+                    result = array[0];
+                    //result = obj[0].ToString;                                                                         //my code doesn't work and I don't know why...
+                }
+                catch (Exception ex)  //just for demonstration...it's always best to handle specific exceptions
+                {
+                    //react appropriately
+                    if (result == null || result == "")
+                        result = "Unable to obtain";
+                        break;
+                }
+
+                break;
+            }
+            return result;
+        }
+        //Calls NetworkInterface class and looks for first network card and grabs it's DNS address
+                public static string DnsAddress()
+        {
+            string result = string.Empty;
+            ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT DNSServerSearchOrder FROM Win32_NetworkAdapterConfiguration WHERE INDEX=1");
+            foreach (ManagementObject DnsAddress in searcher.Get())
+            {
+                try
+                {
+                    //result = GatewayAddress["DefaultIPGateway"].GetType().ToString();
+                    Object obj = DnsAddress["DNSServerSearchOrder"];                                                    //my code works and I dont' know why...
+                    string[] array = (obj as IEnumerable<object>).Cast<object>().Select(x => x.ToString()).ToArray();
+                    result = array[0];
+                    //result = obj[0].ToString;                                                                         //my code doesn't work and I don't know why...
+                }
+                catch (Exception ex)  //just for demonstration...it's always best to handle specific exceptions
+                {
+                    //react appropriately
+                    if (result == null || result == "")
+                        result = "Unable to obtain";
+                        break;
+                }
+
+                break;
+            }
+            return result;
+        }
+
+        //
+        //!--Domain Info--!!
+        //
+
+        //Calls WMI and searches for DomainName
+        public static string DomainName()
+        {
+            string result = string.Empty;
+            ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_ComputerSystem");
+            foreach (ManagementObject DomainName in searcher.Get())
+            {
+                try
+                {
+                    result = DomainName["Domain"].ToString();
+                }
+                catch (Exception ex)  //just for demonstration...it's always best to handle specific exceptions
+                {
+                    //react appropriately
+                    if (result == null)
+                        result = "Unable to obtain";
+                        break;
+                }
+
+                break;
+            }
+            return result;
+        }
+        //Calls WMI and searches for UserName
+        public static string UserName()
+        {
+            string result = string.Empty;
+            ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_ComputerSystem");
+            foreach (ManagementObject Username in searcher.Get())
+            {
+                try
+                {
+                    result = Username["UserName"].ToString();
+                }
+                catch (Exception ex)  //just for demonstration...it's always best to handle specific exceptions
+                {
+                    //react appropriately
+                    if (result == null)
+                        result = "Unable to obtain";
+                        break;
+                }
+
+                break;
+            }
+            return result;
+        }
+        //Calls WMI and searches for ClientSiteName
+        public static string ADSiteName()
+        {
+            string result = string.Empty;
+            {
+                try
+                {
+                    result = (System.DirectoryServices.ActiveDirectory.ActiveDirectorySite.GetComputerSite().ToString());
+                    if (result == null || result == "")
+                    result = "Unable to obtain";
+                }
+                catch (Exception ex)  //just for demonstration...it's always best to handle specific exceptions
+                {
+                    //react appropriately
+                    if (result == null || result == "")
+                        result = "Unable to obtain";
+                }
+
+            }
+            return result;
+        }
+
+        //Calls environment variable and searches for logonserver
+        public static string DCServerName()
+        {
+            string result = string.Empty;
+            {
+                try
+                {
+                    result = Environment.GetEnvironmentVariable("logonserver");
+                    if (result == null)
+                        result = "Unable to obtain";
+                }
+                catch (Exception ex)
+                {
+                    result = "Unable to obtain";
+                }
+                return result;
+            }
+        }
+        //Calls environment variable SubAreaID and returns it
+        public static string SubAreaName()
+        {
+            string result = string.Empty;
+            {
+                try
+                {
+                    if (result != null)
+                        result = Environment.GetEnvironmentVariable("SubAreaID");
+                    if (result == null)
+                        result = "Unable to obtain";
+                }
+                catch (Exception ex)
+                {
+                    result = "Unable to obtain";
+                }
+                return result;
+            }
+        }
+        //Call AD and return user groups for user
+        public static string GetGroups(string username)
+        {
+            string[] output = null;
+            string result = null;
+            try
+            {
+                using (var ctx = new PrincipalContext(ContextType.Domain))
+                using (var user = UserPrincipal.FindByIdentity(ctx, username))
+                {
+                    if (user != null)
+                    {
+                        output = user.GetGroups() //this returns a collection of principal objects
+                            .Select(x => x.SamAccountName) // select the name.  you may change this to choose the display name or whatever you want
+                            .ToArray(); // convert to string array
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                result = ex.ToString();
+            }
+            return result;
+        }
+
+        //
+        //!--App Info--!!
+        //
+
+        //Uses registry entries to populate listbox
+        public void GetInstalledApps()
+        {
+            string uninstallKey = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall";
+            using (RegistryKey rk = Registry.LocalMachine.OpenSubKey(uninstallKey))
+            {
+                foreach (string skName in rk.GetSubKeyNames())
+                {
+                    using (RegistryKey sk = rk.OpenSubKey(skName))
+                    {
+                        try
+                        {
+                            AppsList.Items.Add(sk.GetValue("DisplayName"));
+                        }
+                        catch (Exception ex)
+                        {
+                            AppsList.Items.Add("Unable to obtain");
+                        }
+                    }
+                }
+                //Label1.Content = AppsList.Items.Count.ToString();
+            }
+        }
 
         public MainWindow()
         {
@@ -385,11 +626,14 @@ namespace build_certificate
             CompNameVal.Content = ComputerName();
             AssetNumVal.Content = GetAssetTag();
             BuildDateTimeVal.Content = InstallDate();
-            InitBuildVerVal.Content = InitialInstallVersion(); //Probably use a filedrop or call the old registry key value
+            InitBuildVerVal.Content = "TODO"; //Probably use a filedrop or call the old registry key value
             CurBuildVerVal.Content = BuildNumber();
             //System Software
             OperatingSysVal.Content = GetOSFriendlyName();
             KernelVerVal.Content = Kernel();
+            IEVerVal.Content = IEVersion(); //Maybe registry?
+            MSOfficeVerVal.Content = MSOfficeVersion();
+            AppVVerVal.Content = AppVVersion();
             //--System Tab End--
 
             //--Hardware Tab Start--
@@ -400,12 +644,22 @@ namespace build_certificate
             SKUNumVal.Content = SKUNumber();
             ProcessorVal.Content = ProcessorName();
             MemoryVal.Content = PhysicalMemory();
-            BIOSUUIDVal.Content = UUID();
             //Networking Information
             IPAddrVal.Content = IPAddress();
             MACAddrVal.Content = MACAddress();
+            GatewayVal.Content = GatewayAddress();
+            DNSServersVal.Content = DnsAddress();
             //--Hardware Tab End--
 
+            //--Roles Tab Start--
+            //Domain Information
+            CurDomainVal.Content = DomainName();
+            UsernameVal.Content = UserName();
+            ADSiteVal.Content = ADSiteName();
+            DCServerVal.Content = DCServerName();
+            SubAreaIDVal.Content = SubAreaName();
+            ADGroupsVal.Items.Add(GetGroups(System.Security.Principal.WindowsIdentity.GetCurrent().Name));
+            //--Roles Tab End--
         }
 
         private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -433,6 +687,9 @@ namespace build_certificate
                 writer.WriteStartElement("SystemSoftware");
                 writer.WriteElementString("OperatingSystem", GetOSFriendlyName());
                 writer.WriteElementString("KernelVersion", Kernel());
+                writer.WriteElementString("IEVersion", IEVersion());
+                writer.WriteElementString("OfficeVersion", MSOfficeVersion());
+                writer.WriteElementString("AppVVersion", AppVVersion());
                 writer.WriteEndElement();
                 writer.WriteStartElement("Hardware");
                 writer.WriteElementString("Make",MakeName());
@@ -441,11 +698,19 @@ namespace build_certificate
                 writer.WriteElementString("SKU",SKUNumber());
                 writer.WriteElementString("Processor",ProcessorName());
                 writer.WriteElementString("RAM",PhysicalMemory());
-                writer.WriteElementString("BIOSUUID", UUID());
-                writer.WriteEndElement();
                 writer.WriteStartElement("Network");
                 writer.WriteElementString("IPAddress",IPAddress());
                 writer.WriteElementString("MACAddress",MACAddress());
+                writer.WriteElementString("GatewayAddress", GatewayAddress());
+                writer.WriteElementString("DNSAddress", DnsAddress());
+                writer.WriteStartElement("Domain");
+                writer.WriteElementString("DomainName", DomainName());
+                writer.WriteElementString("UserName", UserName());
+                writer.WriteElementString("SiteName", ADSiteName());
+                writer.WriteElementString("DCServerName", DCServerName());
+                writer.WriteElementString("SubAreaName", SubAreaName());
+                writer.WriteElementString("ADGroups", ADGroupsVal.Items.Add(GetGroups(System.Security.Principal.WindowsIdentity.GetCurrent().Name)).ToString());
+                writer.WriteEndElement();
                 writer.WriteEndElement();
                 writer.WriteEndElement();
                 writer.WriteEndElement();
@@ -459,6 +724,13 @@ namespace build_certificate
             {
                 Application.Current.Shutdown();
             }
+        }
+
+        private void AppsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            InitializeComponent();
+            //Call this GetInstalledApps in Window Forms Constructor.  
+            GetInstalledApps();
         }
     }
 }

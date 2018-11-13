@@ -1,11 +1,3 @@
-v1.3
-- [Regression] Implemented basic App tab
-- [Regression] Implemented Office version query via WMI
-- Removed Roles tab and a number of network items.
-
-v1.2 
-- Implemented basic App tab
-
 v1.1
 - Implemented Office version query via WMI
 - Implemented splash screen for application startup
