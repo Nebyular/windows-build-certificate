@@ -10,4 +10,4 @@ This new tool is a C# .NET program that displays Information about Windows, inst
 The tool will mainly be used for information gathering for System Administrators to troubleshoot and resolve issues.
 
 #### Note
-The coding on this isn't the greatest so there's plenty of ways to do certain methods more efficiently. The tool is not completed so certain features may also be missing/broken. No support is provided for this tool, use at your own risk.
+The tool is not completed so certain features may also be missing/broken. No support is provided for this tool, use at your own risk.
