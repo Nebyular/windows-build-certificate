@@ -1,24 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Management;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Microsoft.Win32;
 using System.Net;
-using System.Net.NetworkInformation;
-using System.Security.Principal;
-using System.DirectoryServices.AccountManagement;
-using System.Diagnostics;
 using System.Xml;
 
 namespace build_certificate
@@ -77,7 +61,7 @@ namespace build_certificate
                     if (result == null || result == "")
                         result = "Unable to obtain";
                 }
-                catch (Exception ex)  //just for demonstration...it's always best to handle specific exceptions
+                catch (Exception ex)
                 {
                     //react appropriately
                     result = "Unable to obtain";
@@ -105,7 +89,7 @@ namespace build_certificate
                     result = "Unable to obtain";
                 }
             }
-            catch (Exception ex)  //just for demonstration...it's always best to handle specific exceptions
+            catch (Exception ex)
             {
                 result = "Unable to obtain";
             }
@@ -161,7 +145,7 @@ namespace build_certificate
                         }
                     }
                 }
-                catch (Exception ex)  //just for demonstration...it's always best to handle specific exceptions
+                catch (Exception ex)
                 {
                     result = "Unable to obtain";
                 }
@@ -203,7 +187,7 @@ namespace build_certificate
                     }
                 }
             }
-            catch (Exception ex)  //just for demonstration...it's always best to handle specific exceptions
+            catch (Exception ex)
             {
                 result = "Unable to obtain";
             }
@@ -408,11 +392,6 @@ namespace build_certificate
 
         }
 
-        private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
         private void Close_Button_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown(); //programatically close the app
@@ -420,8 +399,9 @@ namespace build_certificate
 
         private void Export_Button_Click(object sender, RoutedEventArgs e)
         {
+            string userName = Environment.UserName;
 
-            using (XmlWriter writer = XmlWriter.Create("C:\\Users\\Jack\\Desktop\\report.xml"))
+            using (XmlWriter writer = XmlWriter.Create("C:\\Users\\"+userName+"\\Desktop\\report.xml"))
             {
                 writer.WriteStartElement(ComputerName());
                 writer.WriteStartElement("System");
