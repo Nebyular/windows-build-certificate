@@ -5,10 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:build_certificate"
         mc:Ignorable="d"
-        Title="Build Certificate" Height="507.84" Width="432.07" ResizeMode="NoResize">
+        Title="Build Certificate" Height="513.129" Width="436.57" ResizeMode="NoResize">
     <Grid>
         <TabControl HorizontalAlignment="Left" Height="340" Margin="10,96,0,0" VerticalAlignment="Top" Width="402">
-            <TabItem Header="System">
+            <TabItem Header="Build and System Information">
                 <Grid Background="#FFE5E5E5">
                     <Label Name="BuildInfoHead" Content="Build Information" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
                     <Label Name="CompName" Content="Computer Name" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top"/>
@@ -17,18 +17,16 @@
                     <Label Name="AssetNumVal" Content="Unable to obtain" HorizontalAlignment="Left" Margin="155,67,0,0" VerticalAlignment="Top"/>
                     <Label Name="BuildDateTime" Content="Build Date and Time" HorizontalAlignment="Left" Margin="10,93,0,0" VerticalAlignment="Top"/>
                     <Label Name="BuildDateTimeVal" Content="Unable to obtain" HorizontalAlignment="Left" Margin="155,93,0,0" VerticalAlignment="Top"/>
-                    <Label Name="InitBuildVer" Content="Initial Release Version" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,119,0,0"/>
-                    <Label Name="InitBuildVerVal" Content="Unable to obtain" HorizontalAlignment="Left" Margin="155,119,0,0" VerticalAlignment="Top"/>
-                    <Label Name="CurBuildVer" Content="Current Release Version" HorizontalAlignment="Left" Margin="10,145,0,0" VerticalAlignment="Top"/>
-                    <Label Name="CurBuildVerVal" Content="Unable to obtain" HorizontalAlignment="Left" Margin="155,145,0,0" VerticalAlignment="Top"/>
-                    <Label Name="SysSoftHead" Content="System Software" HorizontalAlignment="Left" Margin="10,176,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
-                    <Label Name="OperatingSys" Content="Operating System" HorizontalAlignment="Left" Margin="10,202,0,0" VerticalAlignment="Top"/>
-                    <Label Name="OperatingSysVal" Content="Unable to obtain" HorizontalAlignment="Left" Margin="155,202,0,0" VerticalAlignment="Top"/>
-                    <Label Name="KernelVer" Content="Version and Build" HorizontalAlignment="Left" Margin="10,228,0,0" VerticalAlignment="Top"/>
-                    <Label Name="KernelVerVal" Content="Unable to obtain" HorizontalAlignment="Left" Margin="155,228,0,0" VerticalAlignment="Top"/>
+                    <Label Name="CurBuildVer" Content="Current Release Version" HorizontalAlignment="Left" Margin="10,204,0,0" VerticalAlignment="Top"/>
+                    <Label Name="CurBuildVerVal" Content="Unable to obtain" HorizontalAlignment="Left" Margin="155,204,0,0" VerticalAlignment="Top"/>
+                    <Label Name="SysSoftHead" Content="System Software" HorizontalAlignment="Left" Margin="10,126,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
+                    <Label Name="OperatingSys" Content="Operating System" HorizontalAlignment="Left" Margin="10,152,0,0" VerticalAlignment="Top"/>
+                    <Label Name="OperatingSysVal" Content="Unable to obtain" HorizontalAlignment="Left" Margin="155,152,0,0" VerticalAlignment="Top"/>
+                    <Label Name="KernelVer" Content="Build Number" HorizontalAlignment="Left" Margin="10,178,0,0" VerticalAlignment="Top"/>
+                    <Label Name="KernelVerVal" Content="Unable to obtain" HorizontalAlignment="Left" Margin="155,178,0,0" VerticalAlignment="Top"/>
                 </Grid>
             </TabItem>
-            <TabItem Header="Hardware">
+            <TabItem Header="Hardware and Network Information">
                 <Grid Background="#FFE5E5E5">
                     <Label Name="HardwareInfoHead" Content="Hardware Information" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
                     <Label Name="Make" Content="Make" HorizontalAlignment="Left" Margin="10,36,0,0" VerticalAlignment="Top"/>
@@ -54,8 +52,8 @@
             </TabItem>
         </TabControl>
         <Image Source="Resources/sample.png" HorizontalAlignment="Left" Height="86" Margin="10,5,0,0" VerticalAlignment="Top" Width="402"/>
-        <Button Name="CloseBtn" Content="Close" HorizontalAlignment="Left" Margin="332,441,0,0" VerticalAlignment="Top" Width="80" Click="Close_Button_Click" Height="21"/>
-        <Button Name="ExportBtn" Content="Export to File" HorizontalAlignment="Left" Margin="10,441,0,0" VerticalAlignment="Top" Width="80" Click="Export_Button_Click" Height="21"/>
+        <Button Name="CloseBtn" Content="Close" HorizontalAlignment="Left" Margin="332,445,0,0" VerticalAlignment="Top" Width="80" Click="Close_Button_Click" Height="21"/>
+        <Button Name="ExportBtn" Content="Export to File" HorizontalAlignment="Left" Margin="10,445,0,0" VerticalAlignment="Top" Width="80" Click="Export_Button_Click" Height="21"/>
 
     </Grid>
 </Window>

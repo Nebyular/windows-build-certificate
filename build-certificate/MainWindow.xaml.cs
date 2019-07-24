@@ -70,31 +70,31 @@ namespace build_certificate
             return result;
         }
         //Calls registry and searches for Iniital install version
-        public static string InitialInstallVersion()
-        {
-            string result = string.Empty;
-            try //now we check the registry key values for the Release ID
-            {
-                using (RegistryKey key = Registry.LocalMachine.OpenSubKey("System\\Select\\DHS"))
-                {
-                    if (key != null)
-                        if (key != null)
-                        {
-                            Object o = key.GetValue("BuildVersion");
-                            if (o != null)
-                            {
-                                result = o.ToString();  //convert object to string
-                            }
-                        }
-                    result = "Unable to obtain";
-                }
-            }
-            catch (Exception ex)
-            {
-                result = "Unable to obtain";
-            }
-            return result;
-        }
+        //public static string InitialInstallVersion()
+        //{
+        //    string result = string.Empty;
+        //    try //now we check the registry key values for the Release ID
+        //    {
+        //        using (RegistryKey key = Registry.LocalMachine.OpenSubKey("System\\Select\\DHS"))
+        //        {
+        //            if (key != null)
+        //                if (key != null)
+        //                {
+        //                    Object o = key.GetValue("BuildVersion");
+        //                    if (o != null)
+        //                    {
+        //                        result = o.ToString();  //convert object to string
+        //                    }
+        //                }
+        //            result = "Unable to obtain";
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        result = "Unable to obtain";
+        //    }
+        //    return result;
+        //}
     
         
 
@@ -342,7 +342,7 @@ namespace build_certificate
             string result = string.Empty;
             try
             {
-                ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT MACAddress FROM Win32_NetworkAdapterConfiguration WHERE INDEX=2");
+                ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT MACAddress FROM Win32_NetworkAdapterConfiguration WHERE INDEX=1");
                 foreach (ManagementObject MACAddress in searcher.Get())
                 {
                     result = MACAddress["MACAddress"].ToString();
@@ -369,7 +369,7 @@ namespace build_certificate
             CompNameVal.Content = ComputerName();
             AssetNumVal.Content = GetAssetTag();
             BuildDateTimeVal.Content = InstallDate();
-            InitBuildVerVal.Content = InitialInstallVersion(); //Probably use a filedrop or call the old registry key value
+            //InitBuildVerVal.Content = InitialInstallVersion(); //Probably use a filedrop or call the old registry key value
             CurBuildVerVal.Content = BuildNumber();
             //System Software
             OperatingSysVal.Content = GetOSFriendlyName();
@@ -397,18 +397,18 @@ namespace build_certificate
             Application.Current.Shutdown(); //programatically close the app
         }
 
+        //We use this to create an XML formatted file with the method values.
         private void Export_Button_Click(object sender, RoutedEventArgs e)
         {
             string userName = Environment.UserName;
 
-            using (XmlWriter writer = XmlWriter.Create("C:\\Users\\"+userName+"\\Desktop\\report.xml"))
+            using (XmlWriter writer = XmlWriter.Create("C:\\Users\\"+userName+"\\Desktop\\"+ CompNameVal.Content + "-Report.xml"))
             {
                 writer.WriteStartElement(ComputerName());
                 writer.WriteStartElement("System");
                 writer.WriteElementString("ITNumber", ComputerName());
                 writer.WriteElementString("AssetTag", GetAssetTag());
                 writer.WriteElementString("InstallDate", InstallDate());
-                writer.WriteElementString("InitialBuild", "Not yet implemented");
                 writer.WriteElementString("CurrentBuild", BuildNumber());
                 writer.WriteStartElement("SystemSoftware");
                 writer.WriteElementString("OperatingSystem", GetOSFriendlyName());
@@ -431,8 +431,8 @@ namespace build_certificate
                 writer.WriteEndElement();
                 writer.Flush();
             }
-            MessageBoxResult result = MessageBox.Show("File has been exported to the Desktop.",
-                              "Confirmation",
+            MessageBoxResult result = MessageBox.Show(CompNameVal.Content + " - Report.xml has been exported to the Desktop.",
+                              "File Exported",
                               MessageBoxButton.OK,
                               MessageBoxImage.Information);
             if (result == MessageBoxResult.Yes)
